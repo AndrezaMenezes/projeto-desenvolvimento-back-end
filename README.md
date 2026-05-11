@@ -44,3 +44,52 @@ A API utiliza:
 
 ```bash
 python -m venv venv
+
+### Ativar ambiente virtual
+
+Windows:
+
+```bash
+venv\Scripts\activate
+```
+
+### Instalar dependências
+
+```bash
+pip install -r requirements.txt
+```
+
+### Executar servidor
+
+```bash
+uvicorn main:app --reload
+```
+
+---
+
+## Documentação Swagger
+
+Após executar o servidor:
+
+```text
+http://127.0.0.1:8000/docs
+```
+
+---
+
+## Estrutura do projeto
+
+```text
+src/
+├── api/
+├── database/
+├── models/
+├── schemas/
+└── services/
+```
+
+---
+
+## Autora
+
+Andreza Menezes
