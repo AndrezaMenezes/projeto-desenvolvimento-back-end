@@ -16,6 +16,9 @@ from src.schemas.order_schema import (
     OrderResponse
 )
 
+# Importa função de simulação de pagamento
+from src.payments.payment_mock import simular_pagamento
+
 # Importa função de validação do token JWT
 from src.services.auth_service import verificar_token
 
@@ -136,4 +139,47 @@ def deletar_pedido(
     # Retorna confirmação
     return {
         "mensagem": "Pedido removido com sucesso"
+    }
+
+# Endpoint responsável pela simulação de pagamento
+@router.post("/pagamentos/mock/{pedido_id}")
+def mock_pagamento(
+    pedido_id: int,
+    db: Session = Depends(get_db),
+    usuario: str = Depends(verificar_token)
+):
+
+    # Busca pedido pelo ID
+    pedido = db.query(Order).filter(
+        Order.id == pedido_id
+    ).first()
+
+    # Verifica se pedido existe
+    if not pedido:
+
+        return {
+            "erro": "Pedido não encontrado"
+        }
+
+    # Simula pagamento
+    resultado = simular_pagamento()
+
+    # Atualiza status conforme resultado
+    if resultado == "APROVADO":
+
+        pedido.status = "PAGO"
+
+    else:
+
+        pedido.status = "PAGAMENTO_RECUSADO"
+
+    # Salva alterações
+    db.commit()
+    db.refresh(pedido)
+
+    # Retorna resultado do mock
+    return {
+        "pedido_id": pedido.id,
+        "resultado_pagamento": resultado,
+        "status_atual": pedido.status
     }
