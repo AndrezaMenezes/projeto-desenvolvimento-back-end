@@ -44,6 +44,7 @@ A API utiliza:
 
 ```bash
 python -m venv venv
+```
 
 ### Ativar ambiente virtual
 
