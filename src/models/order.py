@@ -25,3 +25,4 @@ class Order(Base):
 
     # Status atual do pedido
     status = Column(String, nullable=False)
+
